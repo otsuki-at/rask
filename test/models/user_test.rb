@@ -79,7 +79,7 @@ class UserTest < ActiveSupport::TestCase
     user[:screen_name] ="other_screen_name"
     assert_not User.new(user).save
   end
-
+# This software is for small groups, so users cannot be deleted
   test "should not delete user" do
     user = @user_template.clone
     user = User.create(user)
