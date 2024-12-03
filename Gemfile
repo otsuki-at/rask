@@ -66,3 +66,4 @@ gem 'jay_flavored_markdown', git: 'https://github.com/ueno12345/jay_flavored_mar
 gem 'kaminari'
 gem 'ransack'
 gem 'bootstrap'
+gem 'sassc-rails'
