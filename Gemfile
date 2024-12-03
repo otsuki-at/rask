@@ -55,7 +55,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-gem 'bigdecimal', '3.1.2'
+gem 'bigdecimal'
 gem 'rexml'
 gem 'omniauth'
 gem 'omniauth-github', github: 'omniauth/omniauth-github'
