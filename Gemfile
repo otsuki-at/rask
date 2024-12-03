@@ -57,3 +57,4 @@ group :test do
 end
 gem 'bigdecimal', '3.0'
 gem 'rexml'
+gem 'omniauth'
