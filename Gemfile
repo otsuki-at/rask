@@ -58,3 +58,4 @@ end
 gem 'bigdecimal', '3.0'
 gem 'rexml'
 gem 'omniauth'
+gem 'omniauth-github', github: 'omniauth/omniauth-github'
