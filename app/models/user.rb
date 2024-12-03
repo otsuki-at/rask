@@ -21,6 +21,11 @@ class User < ApplicationRecord
     validates :uid, uniqueness: true, presence: true
     validates :name, presence: true, uniqueness: true
     validates :screen_name, presence: true
+# This software is for small groups, so users cannot be deleted
+    before_destroy :prevent_destroy
+    def prevent_destroy
+      throw(:abort)
+    end
 
     def User.digest(string)
         cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
