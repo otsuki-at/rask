@@ -56,3 +56,4 @@ group :test do
   gem "selenium-webdriver"
 end
 gem 'bigdecimal', '3.0'
+gem 'rexml'
