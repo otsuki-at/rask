@@ -99,7 +99,7 @@ GEM
     ast (2.4.2)
     base64 (0.2.0)
     benchmark (0.4.0)
-    bigdecimal (3.0.0)
+    bigdecimal (3.1.2)
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
@@ -384,7 +384,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  bigdecimal (= 3.0)
+  bigdecimal (= 3.1.2)
   bootsnap
   brakeman
   capybara
