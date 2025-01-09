@@ -4,20 +4,40 @@
     <title><%= content_for(:title) || "Rask" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= yield :head %>
-
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'tab' %>
+    <%= stylesheet_link_tag 'tasks' %>
+    <%= stylesheet_link_tag 'users' %>
+    <%= stylesheet_link_tag 'jfm' %>
+    <%= stylesheet_link_tag 'github-markdown' %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <%= render 'layouts/header' %>
+    <% flash.each do |message_type, message| %>
+      <% message_color = {:notice => "blue", :success => "blue", :danger => "yellow", :alert => "red"} %>
+      <p class="m-3 p-3 bg-<%= message_color[message_type.to_sym] %>-400 text-white rounded">
+        <%= message %>
+      </p>
+    <% end %>
+    <div class="flex">
+      <div class="w-1/4 p-3">
+        <%= render 'layouts/tag_list' %>
+      </div>
+      <div class="w-3/4">
+        <div class="container mx-auto max-w-5xl p-5">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

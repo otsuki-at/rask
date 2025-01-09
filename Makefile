@@ -3,8 +3,11 @@ up:
 
 setup:
 	docker compose exec myapp bash -c 'bundle install'
+<<<<<<< HEAD
 	docker compose exec myapp bash -c 'bundle exec rails webpacker:install'
 	docker compose exec myapp bash -c 'bundle exec rails tailwindcss:install'
+=======
+>>>>>>> 5aeacd6 (Port files from the Rask project)
 	docker compose exec myapp bash -c 'bundle exec rails db:migrate'
 
 start:
