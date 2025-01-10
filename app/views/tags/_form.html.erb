@@ -1,8 +1,7 @@
 <%= form_with(model: tag) do |form| %>
   <% if tag.errors.any? %>
-    <div id="error_explanation">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(tag.errors.count, "error") %> prohibited this tag from being saved:</h2>
-
       <ul>
         <% tag.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,12 +10,12 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name, "タグ名", class: "text-xl block font-bold mb-2" %>
-    <%= form.text_field :name, class: "border-2 w-full" %>
+  <div class="mb-3">
+    <%= form.label :name, "タグ名", class: "form-label fw-bold" %>
+    <%= form.text_field :name, class: "form-control" %>
   </div>
 
-  <div class="actions">
-    <%= form.submit "保存", class: "bg-red-400 p-2 text-white rounded w-full" %>
+  <div class="d-grid">
+    <%= form.submit "保存", class: "btn btn-danger" %>
   </div>
 <% end %>

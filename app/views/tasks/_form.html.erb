@@ -1,64 +1,61 @@
 <%= form_with(model: task, id: 'editor') do |form| %>
   <% if task.errors.any? %>
-    <div id="error_explanation">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
-
       <ul>
         <% task.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
-    <% end %>
+  <% end %>
 
-    <div class="field my-4">
-    <%= form.label :assigner_id, "担当者", class: "text-xl block font-bold mb-2" %>
-    <%= form.select :assigner_id, @users.map { |u| [u.screen_name, u.id] }, class: "border-2 w-full" %>
+  <div class="mb-4">
+    <%= form.label :assigner_id, "担当者", class: "form-label fw-bold" %>
+    <%= form.select :assigner_id, @users.map { |u| [u.screen_name, u.id] }, {}, class: "form-select" %>
   </div>
 
-  <div class="field my-4">
-    <%= form.label :project_id, "プロジェクト名", class: "text-xl block font-bold mb-2" %>
-    <%= form.select :project_id, @projects.map { |p| [p.name, p.id] }, { include_blank: true }, class: "border-2 w-full" %>
+  <div class="mb-4">
+    <%= form.label :project_id, "プロジェクト名", class: "form-label fw-bold" %>
+    <%= form.select :project_id, @projects.map { |p| [p.name, p.id] }, { include_blank: true }, class: "form-select" %>
   </div>
 
-  <div class="field my-4">
-    <%= form.label :tags, "タグ", class: "text-xl block font-bold mb-2" %>
-    <br/>
-    <div id="current-tags"></div>
+  <div class="mb-4">
+    <%= form.label :tags, "タグ", class: "form-label fw-bold" %>
+    <div id="current-tags" class="mb-2"></div>
     <% tag_names = @task.tags.map(&:name) %>
-    <input id="tag-names" name="tag_names" type="hidden" value="<%= tag_names.join(' ') %>"></input>
-    <br/>
-    <div class="w-full">
-      <input autocomplete="off" class="border-2 w-4/5" id="tag-name" type="text"></input>
-      <button class="px-2 py-1 bg-blue-400 text-white font-semibold rounded hover:bg-blue-500 right-0" id="tag-add-button" type="button">Add tag</button>
-      </div>
+    <input id="tag-names" name="tag_names" type="hidden" value="<%= tag_names.join(' ') %>" />
+    <div class="input-group">
+      <input autocomplete="off" id="tag-name" type="text" class="form-control" placeholder="タグを入力してください" />
+      <button id="tag-add-button" type="button" class="btn btn-primary">Add tag</button>
+    </div>
   </div>
 
-  <%= javascript_pack_tag 'tag_completion' %>
+  <%= javascript_include_tag 'tag_completion' %>
 
-  <div class="field my-4">
-    <%= form.label :due_at, "期限", class: "text-xl block font-bold mb-2" %>
-    <%= form.date_field :due_at, class: "border-2 w-full" %>
+  <div class="mb-4">
+    <%= form.label :due_at, "期限", class: "form-label fw-bold" %>
+    <%= form.date_field :due_at, class: "form-control" %>
   </div>
 
-  <div class="field my-4">
-    <%= form.label :due_at, "状態", class: "text-xl block font-bold mb-2" %>
-    <%= form.select :task_state_id, @task_states.map { |p| [p.name, p.id] }, { include_blank: false }, class: "border-2 w-full"  %>
+  <div class="mb-4">
+    <%= form.label :task_state_id, "状態", class: "form-label fw-bold" %>
+    <%= form.select :task_state_id, @task_states.map { |p| [p.name, p.id] }, { include_blank: false }, class: "form-select" %>
   </div>
 
-  <div class="field my-4">
-    <%= form.label :content, "内容", class: "text-xl block font-bold mb-2" %>
-    <%= form.text_field :content, class: "border-2 w-full", placeholder: "タスクの内容を入力してください", required: true %>
+  <div class="mb-4">
+    <%= form.label :content, "内容", class: "form-label fw-bold" %>
+    <%= form.text_field :content, class: "form-control", placeholder: "タスクの内容を入力してください", required: true %>
   </div>
 
-  <div class="field my-4">
-    <%= form.label :description, "説明", class: "text-xl block font-bold mb-2" %>
-    <%= form.text_area :description, class: "border-2 w-full", rows: 10, placeholder: "タスクの説明を入力してください" %>
+  <div class="mb-4">
+    <%= form.label :description, "説明", class: "form-label fw-bold" %>
+    <%= form.text_area :description, class: "form-control", rows: 10, placeholder: "タスクの説明を入力してください" %>
   </div>
 
-  <div class="actions">
-    <%= form.submit "保存", class: "bg-red-400 p-2 text-white rounded w-full" %>
+  <div class="d-grid">
+    <%= form.submit "保存", class: "btn btn-danger" %>
   </div>
 
-  <%= javascript_pack_tag 'prevent_transition_in_editing' %>
+  <%= javascript_include_tag 'prevent_transition_in_editing' %>
 <% end %>

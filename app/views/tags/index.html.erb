@@ -1,7 +1,7 @@
-<div class="flex">
+<div class="d-flex">
   <%= render 'layouts/h1', title: "タグ一覧" %>
-  <div class="flex-1"></div>
-  <%= link_to '新規作成', new_tag_path, class: "my-auto text-white bg-red-400 rounded p-2" %>
+  <div class="flex-grow-1"></div>
+  <%= link_to '新規作成', new_tag_path, class: "my-auto btn btn-danger text-white" %>
 </div>
 
 <%= render @tags %>

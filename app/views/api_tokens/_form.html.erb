@@ -1,6 +1,6 @@
 <%= form_with(model: api_token) do |form| %>
   <% if api_token.errors.any? %>
-    <div id="error_explanation">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(api_token.errors.count, "error") %> prohibited this api_token from being saved:</h2>
 
       <ul>
@@ -11,12 +11,12 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :description, "トークン名", class: "text-xl block font-bold mb-2" %>
-    <%= form.text_field :description, class: "border-2 w-full" %>
+  <div class="form-group">
+    <%= form.label :description, "トークン名", class: "h5 font-weight-bold" %>
+    <%= form.text_field :description, class: "form-control" %>
   </div>
 
   <div class="actions">
-    <%= form.submit "保存", class: "bg-red-400 p-2 text-white rounded w-full" %>
+    <%= form.submit "保存", class: "btn btn-danger btn-block" %>
   </div>
 <% end %>

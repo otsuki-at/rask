@@ -12,23 +12,17 @@
     <%= stylesheet_link_tag 'users' %>
     <%= stylesheet_link_tag 'jfm' %>
     <%= stylesheet_link_tag 'github-markdown' %>
-
-    <%# <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> %>
-
-    <%# <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> %>
-    <%# <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> %>
-    <%# <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> %>
   </head>
 
   <body>
     <%= render 'layouts/header' %>
     <% flash.each do |message_type, message| %>
-      <% message_color = {:notice => "blue", :success => "blue", :danger => "yellow", :alert => "red"} %>
-      <p class="m-3 p-3 bg-<%= message_color[message_type.to_sym] %>-400 text-white rounded">
+      <% message_color = {:notice => "primary", :success => "primary", :danger => "warning", :alert => "danger"} %>
+      <p class="m-3 p-3 bg-<%= message_color[message_type.to_sym] %> text-white rounded">
         <%= message %>
       </p>
     <% end %>
-    <div class="container mx-auto max-w-5xl p-5">
+    <div class="container-lg px-4 py-3">
       <%= yield %>
     </div>
   </body>

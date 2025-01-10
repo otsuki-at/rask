@@ -1,32 +1,33 @@
 <%= render 'layouts/h1', title: @task.content %>
 
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">担当者</p>
-  <%= link_to @task.assigner.name, @task.assigner %>
+  <p class="h5 fw-bold mb-2">担当者</p>
+  <%= link_to @task.assigner.name, @task.assigner, class: "text-dark text-decoration-none" %>
 </div>
 
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">期限</p>
-  <%= @task.due_at&.to_s(:datetime_jp) %>
+  <p class="h5 fw-bold mb-2">期限</p>
+  <span class="text-muted"><%= @task.due_at&.to_formatted_s(:datetime_jp) %>
+</span>
 </div>
 
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">タグ</p>
+  <p class="h5 fw-bold mb-2">タグ</p>
   <% @task.tags.each do |tag| %>
-  <%= link_to tag_label(tag), tag %>
+    <%= link_to tag_label(tag), tag, class: "badge bg-primary me-2" %>
   <% end %>
-  <br>
 </div>
 
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">説明</p>
+  <p class="h5 fw-bold mb-2">説明</p>
   <div class="markdown-body">
-  <%== JayFlavoredMarkdownConverter.new(@task.description).content %>
+    <%== JayFlavoredMarkdownConverter.new(@task.description).content %>
   </div>
 </div>
 
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">所属プロジェクト</p>
-  <%= link_to @task.project.name, @task.project if @task.project %>
+  <p class="h5 fw-bold mb-2">所属プロジェクト</p>
+  <%= link_to @task.project.name, @task.project, class: "text-dark text-decoration-none" if @task.project %>
 </div>
-<%= link_to '編集', edit_task_path(@task) %>
+
+<%= link_to '編集', edit_task_path(@task), class: "btn btn-outline-dark" %>

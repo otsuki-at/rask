@@ -1,25 +1,25 @@
 <%= render 'layouts/h1', title: @document.content %>
 
-<div class="my-3">
+<div class="h4 my-3">
   <p class="text-xl">
     <%= @document.start_at&.strftime('%Y-%m-%d %H:%M') %>
     〜
     <%= @document.end_at&.strftime('%Y-%m-%d %H:%M') %>
   <p class="text-xl">作成者:
-    <%= link_to_if @document.creator&.name, @document.creator.name, @document.creator %>
+    <%= link_to_if @document.creator&.name, @document.creator.name, @document.creator, class: "text-black text-decoration-none" %>
   <p class="text-xl">所属プロジェクト:
-    <%= link_to_if  @document.project&.name, @document.project&.name, @document.project %>
+    <%= link_to_if  @document.project&.name, @document.project&.name, @document.project, class: "text-black text-decoration-none" %>
   </p>
   <br>
   <p class="text-xl">タグ:
     <% @document.tags.each do |tag| %>
-      <%= link_to tag_label(tag), tag %>
+      <%= link_to tag_label(tag), tag, class: "btn btn-primary btn-outline-primary btn-lg" %>
     <% end %>
   </p>
   <br>
   <p class="text-xl block font-bold mb-2">文書内容
   <%= link_to document_path(@document, "txt"), title: "Download txt", download: @document.content + ".txt" do %>
-    <i class="fa fa-download"></i> 
+    <i class="fa fa-download" style="color:black;"></i>
   <% end %>
   </p>
   <div class="markdown-body">
@@ -46,6 +46,6 @@
     <% end %>
   </div>
   </p>
-  <%= link_to '編集', edit_document_path(@document) %>
+  <%= link_to '編集', edit_document_path(@document), class: "text-black text-decoration-none" %>
 </div>
-<%= javascript_pack_tag 'documents' %>
+<%= javascript_include_tag 'documents' %>

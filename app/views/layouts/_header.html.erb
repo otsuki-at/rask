@@ -1,22 +1,28 @@
-<header class="bg-red-400 p-3 shadow flex gap-4 sticky top-0 right-0 left-0 z-50">
-  <%= link_to "Rask", tasks_path, class: 'font-bold' %>
-  <div class="flex-1">
-    <ul class="flex gap-4">
-      <li><%= link_to "プロジェクト", projects_path, method: :get %></li>
-      <li><%= link_to "タスク一覧", tasks_path, method: :get %></li>
-      <li><%= link_to "文書一覧", documents_path, method: :get %></li>
-      <li><%= link_to "タグ一覧", tags_path, method: :get %></li>
-      <li><%= link_to "ユーザ一覧", users_path, method: :get %></li>
-      <li><%= link_to "APIトークン一覧", api_tokens_path, method: :get %></li>
-      <li><%= link_to "Raskについて(GitHub)", 'https://github.com/nomlab/rask/blob/main/README.md', method: :get %></li>
+<nav class="navbar sticky-top navbar-expand-sm navbar-light bg-danger mb-3 z-50">
+  <%= link_to "Rask", tasks_path, class: "navbar-brand text-black" %>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item"><%= link_to "プロジェクト", projects_path, method: :get, class: "nav-link text-black" %></li>
+      <li class="nav-item"><%= link_to "タスク一覧", tasks_path, method: :get, class: "nav-link text-black" %></li>
+      <li class="nav-item"><%= link_to "文書一覧", documents_path, method: :get, class: "nav-link text-black" %></li>
+      <li class="nav-item"><%= link_to "タグ一覧", tags_path, method: :get, class: "nav-link text-black" %></li>
+      <li class="nav-item"><%= link_to "ユーザ一覧", users_path, method: :get, class: "nav-link text-black" %></li>
+      <li class="nav-item"><%= link_to "APIトークン一覧", api_tokens_path, method: :get, class: "nav-link text-black" %></li>
+      <li class="nav-item"><%= link_to "Raskについて(GitHub)", 'https://github.com/nomlab/rask/blob/main/README.md', method: :get, class: "nav-link text-black" %></li>
+    </ul>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <%= link_to 'タスクを作成', new_task_path, class: 'btn btn-light me-2' %>
+      </li>
+      <% if logged_in? %>
+        <li class="nav-item">
+          <%= link_to "ログアウト (#{current_user.screen_name})", logout_path, class: 'btn', data: { "turbo-method": :delete, "turbo-confirm": 'ログアウトしますか？' } %>
+        </li>
+      <% else %>
+        <li class="nav-item">
+          <%= button_to "ログイン", '/auth/github', class: 'btn', data: { "turbo": false } %>
+        </li>
+      <% end %>
     </ul>
   </div>
-  <ul class="flex gap-4">
-    <li><%= link_to 'タスクを作成', new_task_path, class: 'my-auto text-default bg-white rounded p-2' %></li>
-    <% if logged_in? %>
-      <li><%= link_to "ログアウト (#{current_user.screen_name})", logout_path, method: :delete, data: { confirm: 'ログアウトしますか？' } %></li>
-    <% else %>
-      <li><%= link_to "ログイン", '/auth/github', method: :post %></li>
-    <% end %>
-  </ul>
-</header>
+</nav>

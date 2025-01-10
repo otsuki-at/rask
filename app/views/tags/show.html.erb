@@ -1,47 +1,47 @@
 <%= render 'layouts/h1', title: @tag.name %>
 
 <div>
-  <p class="text-xl block font-bold mb-2">タグ名</p>
-  <%= link_to @tag.name %>
+  <p class="h5 fw-bold mb-2">タグ名</p>
+    <p class="h5 mb-2"><%= link_to @tag.name, @tag, class: "btn btn-lg btn-primary text-white" %></p>
 </div>
 
-
 <div>
-  <div class="flex">
-    <p class="text-xl block font-bold mb-2">タスク一覧</p>
-    <div class="flex-1"></div>
+  <div class="d-flex">
+    <p class="h5 fw-bold mb-2">タスク一覧</p>
+    <div class="flex-grow-1"></div>
   </div>
   <% @tag.tasks.each do |task| %>
-    <div class="p-3 my-3 border rounded flex space-x-4">
+    <div class="p-3 my-3 border rounded d-flex justify-content-between">
       <div>
-        <p class="text-xl"><%= task.content %></p>
+        <p class="h5"><%= task.content %></p>
         <p>担当者: <%= link_to task.assigner.name, task.assigner %></p>
       </div>
-      <div class="flex-1"></div>
+      <div class="flex-grow-1"></div>
       <% if logged_in? %>
-        <%= link_to '詳細', task %>
-        <%= link_to '編集', edit_task_path(task) %>
-        <%= link_to '削除', task, method: :delete, data: { confirm: 'このタスクを削除しますか？' } %>
+        <%= link_to '詳細', task, class: "btn btn-sm" %>
+        <%= link_to '編集', edit_task_path(task), class: "btn btn-sm" %>
+        <%= button_to '削除', task, method: :delete, data: { turbo_confirm: 'このタスクを削除しますか？' }, class: "btn btn-sm" %>
       <% end %>
     </div>
   <% end %>
 
-  <div class="flex">
-    <p class="text-xl block font-bold mb-2">文書一覧</p>
-    <div class="flex-1"></div>
+  <div class="d-flex">
+    <p class="h5 fw-bold mb-2">文書一覧</p>
+    <div class="flex-grow-1"></div>
   </div>
   <% @tag.documents.each do |document| %>
-    <div class="p-3 my-3 border rounded flex space-x-4">
+    <div class="p-3 my-3 border rounded d-flex justify-content-between">
       <div>
-        <p class="text-xl"><%= document.content %></p>
+        <p class="h5"><%= document.content %></p>
       </div>
-      <div class="flex-1"></div>
+      <div class="flex-grow-1"></div>
       <% if logged_in? %>
-        <%= link_to '詳細', document %>
-        <%= link_to '編集', edit_document_path(document) %>
-        <%= link_to '削除', document, method: :delete, data: { confirm: 'この文書を削除しますか？' } %>
+        <%= link_to '詳細', document, class: "btn btn-sm" %>
+        <%= link_to '編集', edit_document_path(document), class: "btn btn-sm" %>
+        <%= button_to '削除', document, method: :delete, data: { turbo_confirm: 'この文書を削除しますか？' }, class: "btn btn-sm" %>
       <% end %>
     </div>
   <% end %>
-  <%= link_to '編集', edit_tag_path(@tag) %>
+
+  <%= link_to '編集', edit_tag_path(@tag), class: "btn btn-sm" %>
 </div>

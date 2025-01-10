@@ -1,38 +1,38 @@
 <%= render 'layouts/h1', title: "ユーザ詳細" %>
 
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">氏名</p>
-  <%= link_to @user.name %>
+  <p class="h4 font-weight-bold mb-2">氏名</p>
+  <%= link_to @user.name, user_path(@user), class: "text-muted text-decoration-none" %>
 </div>
 
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">アカウント名</p>
-  <%= link_to @user.screen_name %>
+  <p class="h4 font-weight-bold mb-2">アカウント名</p>
+  <%= link_to @user.screen_name, user_path(@user), class: "text-muted text-decoration-none" %>
 </div>
 
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">最新タスク</p>
+  <p class="h4 font-weight-bold mb-2">最新タスク</p>
   <%= render @assigned_tasks %>
-  <%= link_to "タスク一覧へ", tasks_path, method: :get, :class => "text-blue-900" %>
+  <%= link_to "タスク一覧へ", tasks_path, method: :get, class: "text-muted text-decoration-none" %>
 </div>
 
 <div>
-  <p class="text-xl block font-bold mb-2">APIトークン</p>
+  <p class="h4 font-weight-bold mb-2">APIトークン</p>
   <% @api_tokens.each do |api_token| %>
     <% if api_token.user_id == current_user.id %>
-      <div class="p-3 my-3 border rounded flex space-x-3">
+      <div class="p-3 my-3 border rounded d-flex justify-content-between">
         <div>
-          <p> APIトークン: <%= api_token.secret %></p>
-          <p> トークン名: <%= api_token.description %></p>
-          <p> 有効期限: <%= api_token.expired_at %></p>
+          <p>APIトークン: <%= api_token.secret %></p>
+          <p>トークン名: <%= api_token.description %></p>
+          <p>有効期限: <%= api_token.expired_at %></p>
         </div>
-        <div class="flex-1">
+        <div>
         </div>
-        <%= link_to '編集', edit_api_token_path(api_token) %>
-        <%= link_to '削除', api_token, method: :delete, data: { confirm: 'このAPIトークンを削除しますか？' } %>
+        <%= link_to '編集', edit_api_token_path(api_token), class: "btn btn-sm" %>
+        <%= button_to '削除', api_token, method: :delete, data: { turbo_confirm: 'このAPIトークンを削除しますか？' }, class: "btn btn-sm" %>
       </div>
     <% end %>
   <% end %>
 </div>
 
-<%= link_to '編集', edit_user_path(@user) %>
+<%= link_to '編集', edit_user_path(@user), class: "btn btn-sm" %>
