@@ -67,3 +67,5 @@ gem 'kaminari'
 gem 'ransack'
 gem 'bootstrap'
 gem 'sassc-rails'
+gem 'rubyzip', '~> 2.3.0'
+

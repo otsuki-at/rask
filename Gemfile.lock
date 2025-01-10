@@ -451,6 +451,7 @@ DEPENDENCIES
   ransack
   rexml
   rubocop-rails-omakase
+  rubyzip (~> 2.3.0)
   sassc-rails
   selenium-webdriver
   sprockets-rails
