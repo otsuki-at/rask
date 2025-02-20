@@ -10,22 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_24_085144) do
-
+ActiveRecord::Schema[7.2].define(version: 2023_08_24_085144) do
   create_table "action_items", force: :cascade do |t|
     t.integer "uid"
     t.string "task_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "api_tokens", force: :cascade do |t|
     t.string "secret"
     t.string "description"
-    t.datetime "expired_at"
+    t.datetime "expired_at", precision: nil
     t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "document_tags", force: :cascade do |t|
@@ -38,29 +37,29 @@ ActiveRecord::Schema.define(version: 2023_08_24_085144) do
   create_table "documents", force: :cascade do |t|
     t.text "content", null: false
     t.integer "creator_id"
-    t.datetime "start_at"
-    t.datetime "end_at"
+    t.datetime "start_at", precision: nil
+    t.datetime "end_at", precision: nil
     t.text "description"
     t.integer "project_id"
     t.text "location"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_documents_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
     t.string "name"
     t.integer "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "tasks"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "task_states", force: :cascade do |t|
@@ -68,15 +67,15 @@ ActiveRecord::Schema.define(version: 2023_08_24_085144) do
     t.integer "priority"
     t.string "about"
     t.string "color"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "task_tags", force: :cascade do |t|
     t.integer "task_id"
     t.integer "tag_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["tag_id"], name: "index_task_tags_on_tag_id"
     t.index ["task_id"], name: "index_task_tags_on_task_id"
   end
@@ -84,12 +83,12 @@ ActiveRecord::Schema.define(version: 2023_08_24_085144) do
   create_table "tasks", force: :cascade do |t|
     t.text "content", null: false
     t.integer "creator_id"
-    t.datetime "due_at"
+    t.datetime "due_at", precision: nil
     t.integer "assigner_id"
     t.text "description"
     t.integer "project_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "tag_id"
     t.integer "task_state_id"
     t.index ["project_id"], name: "index_tasks_on_project_id"
@@ -101,8 +100,8 @@ ActiveRecord::Schema.define(version: 2023_08_24_085144) do
     t.string "name"
     t.string "screen_name"
     t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "provider"
     t.string "uid"
     t.string "avatar_url"
