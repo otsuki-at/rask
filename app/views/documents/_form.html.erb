@@ -36,16 +36,20 @@
   </div>
 
   <div class="mb-4">
-    <%= form.label :tags, "タグ", class: "form-label fw-bold mb-2" %>
-    <div id="current-tags"></div>
+    <%= form.label :tags, "タグ", class: "form-label fw-bold", for: "tag-name" %>
+    <div id="current-tags" class="mb-2"></div>
     <% tag_names = @document.tags.map(&:name) %>
-    <input id="tag-names" name="tag_names" type="hidden" value="<%= tag_names.join(' ') %>"></input>
+    <input id="tag-names" name="tag_names" type="hidden" value="<%= tag_names.join(' ') %>" />
     <div class="input-group">
-      <input autocomplete="off" class="form-control" id="tag-name" type="text"></input>
-      <button class="btn btn-primary" id="tag-add-button" type="button">Add tag</button>
+      <input autocomplete="off" id="tag-name" type="text" class="form-control" placeholder="タグを入力してください" />
+      <button id="tag-add-button" type="button" class="btn btn-primary">Add tag</button>
     </div>
   </div>
-  <%= javascript_include_tag 'tag_completion' %>
+
+
+  <% content_for :js do %>
+    <%= javascript_import_module_tag "tag_completion" %>
+  <% end %>
 
   <div class="tabs">
     <input id="write" type="radio" name="tab_item" checked>

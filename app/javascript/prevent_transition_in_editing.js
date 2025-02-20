@@ -1,4 +1,4 @@
-// prevent closing tab or jumping another page in editing
+// prevent closing tab or jumping to another page in editing
 const beforeUnloadHandler = (e) => {
   e.preventDefault();
   e.returnValue = '';
@@ -7,14 +7,17 @@ const beforeUnloadHandler = (e) => {
 let registered = false;
 const editableElements = document.querySelectorAll('input,select,textarea');
 editableElements.forEach((element) => {
-  element.addEventListener('change', (e) => {
-    if (registered) return;
-    registered = true;
-    window.addEventListener('beforeunload', beforeUnloadHandler);
+  element.addEventListener('change', () => {
+    // イベントリスナーがまだ登録されていない場合のみ追加
+    if (!registered) {
+      window.addEventListener('beforeunload', beforeUnloadHandler);
+      registered = true;
+    }
   });
 });
 
 const form = document.getElementById('editor');
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', () => {
+  // フォーム送信時にリスナーを削除
   window.removeEventListener('beforeunload', beforeUnloadHandler);
 });

@@ -9,6 +9,7 @@ setup:
 =======
 >>>>>>> 5aeacd6 (Port files from the Rask project)
 	docker compose exec myapp bash -c 'bundle exec rails db:migrate'
+	docker compose exec myapp bash -c 'bundle exec rails assets:precompile'
 
 start:
 	docker compose exec myapp bash -c 'bundle exec rails server -b 0.0.0.0'

@@ -21,7 +21,7 @@
   </div>
 
   <div class="mb-4">
-    <%= form.label :tags, "タグ", class: "form-label fw-bold" %>
+    <%= form.label :tags, "タグ", class: "form-label fw-bold", for: "tag-name" %>
     <div id="current-tags" class="mb-2"></div>
     <% tag_names = @task.tags.map(&:name) %>
     <input id="tag-names" name="tag_names" type="hidden" value="<%= tag_names.join(' ') %>" />
@@ -31,7 +31,9 @@
     </div>
   </div>
 
-  <%= javascript_include_tag 'tag_completion' %>
+  <% content_for :js do %>
+    <%= javascript_import_module_tag "tag_completion" %>
+  <% end %>
 
   <div class="mb-4">
     <%= form.label :due_at, "期限", class: "form-label fw-bold" %>

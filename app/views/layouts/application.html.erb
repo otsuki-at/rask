@@ -3,7 +3,7 @@
   <head>
     <title><%= content_for(:title) || "Rask" %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -12,6 +12,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= javascript_importmap_tags %>
+    <!-- yield:js begin here -->
+    <%= yield(:js) %>
+    <!-- yield:js end here -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" />
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "tab", "data-turbo-track": "reload" %>
@@ -19,7 +23,6 @@
     <%= stylesheet_link_tag "users", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "jfm", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "github-markdown", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
   </head>
 
   <body>
