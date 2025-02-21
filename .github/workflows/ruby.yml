@@ -19,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: [3.0.0]
-        node-version: [12.x]
+        ruby-version: [3.3.6]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -35,8 +35,6 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Set up webpack
-      run: bundle exec rails webpacker:install
     - name: Set up database
       run: bundle exec rails db:migrate
     - name: Run tests
