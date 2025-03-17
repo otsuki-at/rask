@@ -1,16 +1,16 @@
 <div class="my-3">
-  <p class="text-xl block font-bold mb-2">作成者</p>
-  <%= link_to @api_token.user.name %>
+  <p class="h5 font-weight-bold mb-2">作成者</p>
+  <%= link_to @api_token.user.name, user_path(@api_token.user) %>
 
-  <p class="text-xl block font-bold mb-2">APIトークン</p>
-  <%= @api_token.secret %>
+  <p class="h5 font-weight-bold mb-2">APIトークン</p>
+  <p><%= @api_token.secret %></p>
 
-  <p class="text-xl block font-bold mb-2">トークン名</p>
-  <%= @api_token.description %>
+  <p class="h5 font-weight-bold mb-2">トークン名</p>
+  <p><%= @api_token.description %></p>
 
-  <p class="text-xl block font-bold mb-2">有効期限</p>
-  <%= @api_token.expired_at %>
+  <p class="h5 font-weight-bold mb-2">有効期限</p>
+  <p><%= @api_token.expired_at %></p>
 </div>
 
-<%= link_to '編集', edit_api_token_path(@api_token) %> |
-<%= link_to '戻る', api_tokens_path %>
+<%= link_to '編集', edit_api_token_path(@api_token), class: "btn btn-sm" %> |
+<%= link_to '戻る', api_tokens_path, class: "btn btn-sm" %>

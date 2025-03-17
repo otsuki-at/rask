@@ -1,6 +1,6 @@
 <%= form_with(model: project) do |form| %>
   <% if project.errors.any? %>
-    <div id="error_explanation">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
 
       <ul>
@@ -11,12 +11,12 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name, "プロジェクト名", class: "text-xl block font-bold mb-2" %>
-    <%= form.text_field :name, class: "border-2 w-full" %>
+  <div class="mb-3">
+    <%= form.label :name, "プロジェクト名", class: "form-label" %>
+    <%= form.text_field :name, class: "form-control" %>
   </div>
 
-  <div class="actions">
-    <%= form.submit "保存", class: "bg-red-400 p-2 text-white rounded w-full" %>
+  <div class="mb-3">
+    <%= form.submit "保存", class: "btn btn-danger w-100" %>
   </div>
 <% end %>

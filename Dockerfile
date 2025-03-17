@@ -1,9 +1,4 @@
-FROM ruby:3.0.0
+FROM ruby:3.3.6
 
-RUN curl https://deb.nodesource.com/setup_12.x | bash
-RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
-RUN apt-get update -qq && apt-get install -y nodejs yarn
-RUN yarn add jquery
-RUN yarn add jquery-textcomplete
+RUN curl https://deb.nodesource.com/setup_18.x | bash
+RUN apt-get update -qq && apt-get install -y nodejs

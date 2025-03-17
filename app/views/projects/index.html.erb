@@ -1,55 +1,58 @@
-<div class="flex">
+<div class="d-flex justify-content-between">
   <%= render 'layouts/h1', title: "プロジェクト一覧" %>
-  <div class="flex-1"></div>
-  <%= link_to '新規作成', new_project_path, class: "my-auto text-white bg-red-400 rounded p-2" %>
+  <div class="flex-grow-1"></div>
+  <%= link_to '新規作成', new_project_path, class: "my-auto btn btn-danger" %>
 </div>
 
 <% @projects.each do |project| %>
-  <div class="p-3 my-3 border rounded ">
-    <div class="flex space-x-4">
+  <div class="p-3 my-3 border rounded">
+    <div class="d-flex justify-content-between">
       <div>
-        <p class="text-xl"><%= project.name %></p>
+        <p class="h5"><%= project.name %></p>
         <p>達成率 : <%= project.tasks.count { |task| task.completed? } %> / <%= project.tasks.count %></p>
       </div>
-      <div class="flex-1"></div>
-      <% if logged_in? %>
-        <%= link_to '詳細', project %>
-        <%= link_to '編集', edit_project_path(project) %>
-        <% if project.tasks.count != 0 %>
-          <p class="text-gray-300">削除</p>
-        <% else %>
-          <%= link_to '削除', project, method: :delete, data: { confirm: 'このプロジェクトを削除しますか？' } %>
+      <div class="text-end">
+        <% if logged_in? %>
+          <div class="d-flex gap-2">
+            <%= link_to '詳細', project, class: "btn btn-sm" %>
+            <%= link_to '編集', edit_project_path(project), class: "btn btn-sm" %>
+            <% if project.tasks.count != 0 %>
+              <span class="text-muted btn btn-sm" style="pointer-events: none; background: none; border: none; color: inherit;">削除</span>
+            <% else %>
+              <%= button_to '削除', project, method: :delete, data: { turbo_confirm: 'このプロジェクトを削除しますか？' }, class: "btn btn-sm text-black" %>
+            <% end %>
+          </div>
         <% end %>
-      <% end %>
+      </div>
     </div>
     <div>
-      <p id="<%= "project-#{project.id}" %>" class="mt-3 text-center cursor-pointer bg-gray-100">+</p>
+      <p id="<%= "project-#{project.id}" %>" class="mt-3 text-center cursor-pointer bg-light">+</p>
     </div>
   </div>
 
-  <div id="<%= "project-#{project.id}-tasks" %>" class="transition-accordion invisible leading-0 opacity-0 max-h-0 duration-500">
+  <div id="<%= "project-#{project.id}-tasks" %>" class="collapse">
     <% project.tasks.each_with_index do |task, index| %>
-      <div class="flex">
-        <div class="w-6">
-          <div class="h-1/2 border-r-2"></div>
+      <div class="d-flex">
+        <div class="w-1">
+          <div class="h-50 border-end"></div>
           <% if index < project.tasks.count - 1 %>
-            <div class="h-1/2 border-r-2"></div>
+            <div class="h-50 border-end"></div>
           <% end %>
         </div>
-        <div class="w-6">
-          <div class="h-1/2 border-b-2"></div>
+        <div class="w-1">
+          <div class="h-50 border-bottom"></div>
         </div>
-        <div class="p-3 my-3 border rounded flex space-x-4 flex-1">
+        <div class="p-3 my-3 border rounded d-flex">
           <div>
-            <p class="text-xl"><%= task.content %></p>
+            <p class="h5"><%= task.content %></p>
             <p>担当者: <%= link_to task.assigner.name, task.assigner %></p>
-            <P>状態: <%= task.state.name %></P>
+            <p>状態: <%= task.state.name %></p>
           </div>
-          <div class="flex-1"></div>
+          <div class="flex-grow-1"></div>
           <% if logged_in? %>
-            <%= link_to '詳細', task %>
-            <%= link_to '編集', edit_task_path(task) %>
-            <%= link_to '削除', task, method: :delete, data: { confirm: 'このタスクを削除しますか？' } %>
+            <%= link_to '詳細', task, class: "btn btn-sm" %>
+            <%= link_to '編集', edit_task_path(task), class: "btn btn-sm" %>
+            <%= button_to '削除', task, method: :delete, data: { turbo_confirm: 'このタスクを削除しますか？' }, class: "btn btn-sm" %>
           <% end %>
         </div>
       </div>
@@ -58,17 +61,14 @@
 <% end %>
 
 <script>
-    <% @projects.each do |project| %>
+  <% @projects.each do |project| %>
     document.getElementById("<%= "project-#{project.id}" %>").onclick = () => {
-        const target = document.getElementById("<%= "project-#{project.id}-tasks"%>")
-        target.classList.toggle("invisible")
-        target.classList.toggle("leading-0")
-        target.classList.toggle("opacity-0")
-        target.classList.toggle("max-h-0")
-        target.classList.toggle("max-h-screen")
+      const target = document.getElementById("<%= "project-#{project.id}-tasks" %>")
+      target.classList.toggle("collapse") // ここでcollapseクラスをトグル
+      target.classList.toggle("show") // 表示状態にするためshowクラスを追加
 
-        const button = document.getElementById("<%= "project-#{project.id}" %>")
-        button.innerText = button.innerText === "+" ? "-" : "+"
+      const button = document.getElementById("<%= "project-#{project.id}" %>")
+      button.innerText = button.innerText === "+" ? "-" : "+"
     }
-    <% end %>
+  <% end %>
 </script>

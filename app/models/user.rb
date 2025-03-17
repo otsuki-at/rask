@@ -1,16 +1,16 @@
 class User < ApplicationRecord
-    has_secure_password validations: false
+  has_secure_password validations: false
 
-    # github action uses the provider name "github"
-    validate do |record|
-      if (record.password_digest.blank? && record.provider != "github") then
-        record.errors.add(:base, "Password is blank and provider is not GitHub")
-      end
+  # github action uses the provider name "github"
+  validate do |record|
+    if record.password_digest.blank? && record.provider != "github" then
+      record.errors.add(:base, "Password is blank and provider is not GitHub")
     end
-    validates_length_of :password, maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED
-    validates_confirmation_of :password, allow_blank: true
+  end
+  validates_length_of :password, maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED
+  validates_confirmation_of :password, allow_blank: true
 
-    validates :provider, presence: true
+  validates :provider, presence: true
 
     has_many :assigned_tasks, foreign_key: 'assigner_id' ,class_name: 'Task'
     has_many :tasks, foreign_key: 'creator_id'
@@ -27,21 +27,24 @@ class User < ApplicationRecord
       throw(:abort)
     end
 
-    def User.digest(string)
-        cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-                 BCrypt::Engine.cost
-        BCrypt::Password.create(string, cost: cost)
-    end
+  def self.ransackable_attributes(auth_object = nil)
+    [ "active", "avatar_url", "created_at", "id", "id_value", "name", "password_digest", "provider", "screen_name", "uid", "updated_at" ]
+  end
 
-    def self.create_with_omniauth(auth)
-        create! do |user|
-            user.provider = auth["provider"]
-            user.uid      = auth["uid"]
+  def User.digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
 
-            info = auth["info"]
-            user.name        = info["name"] || info["nickname"]
-            user.screen_name = info["nickname"]
-            user.avatar_url  = info["image"]
-        end
+  def self.create_with_omniauth(auth)
+    create! do |user|
+      user.provider = auth["provider"]
+      user.uid      = auth["uid"]
+
+      info = auth["info"]
+      user.name        = info["name"] || info["nickname"]
+      user.screen_name = info["nickname"]
+      user.avatar_url  = info["image"]
     end
+  end
 end
