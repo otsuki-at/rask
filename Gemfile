@@ -55,8 +55,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-gem 'bigdecimal'
-gem 'rexml'
 gem 'omniauth'
 gem 'omniauth-github', github: 'omniauth/omniauth-github'
 gem 'omniauth-rails_csrf_protection'
@@ -66,6 +64,5 @@ gem 'jay_flavored_markdown', '>= 0.2.0'
 gem 'kaminari'
 gem 'ransack'
 gem 'bootstrap'
-gem 'sassc-rails'
-gem 'rubyzip', '~> 2.3.0'
+gem 'dartsass-sprockets'
 
