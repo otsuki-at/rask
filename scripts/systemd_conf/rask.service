@@ -6,14 +6,14 @@ After=docker.service
 [Service]
 # Change path to suit your environment
 WorkingDirectory=<Path to rask repository>
-ExecStart=<Path to rask repository>/scripts/rask-docker.sh start -p 3000
-ExecStop=<Path to rask repository>/scripts/rask-docker.sh stop
+ExecStart=<Path to rask repository>/bin/launch-production start -p 3000
+ExecStop=<Path to rask repository>/scripts/launch-production stop
 
 # Change user who owns this repository
 User=rask
 
 Type=simple
-Restart=on-failure
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

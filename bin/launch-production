@@ -1,0 +1,155 @@
+#!/bin/bash
+
+#This script only works under below conditions
+# 1. Docker is installed
+#      See: "https://docs.docker.com/engine/install/"
+# 2. You are a member of 'docker' group
+#      How to: `sudo usermod -sG docker $USER`
+# 3. Current version container is created
+#      How to: `scripts/setup-production-container.sh`
+
+PROJECT_NAME=rask
+SCRIPT_NAME=rask-docker.sh
+
+DEFAULT_IMAGE_TAG=$(git describe --tags --abbrev=0 || echo latest)
+DEFAULT_PORT=3000
+DEFAULT_ATTACH_OPTION=""
+
+DOCKER_COMPOSE_CMD="docker compose"
+DOCKER_COMPOSE_FILE="docker-compose-production.yml"
+DOCKER_COMPOSE="$DOCKER_COMPOSE_CMD -f $DOCKER_COMPOSE_FILE"
+
+function print_usage(){
+    cat <<_EOT_
+$SCRIPT_NAME
+
+Usage:
+    $SCRIPT_NAME Subcommands
+
+Description:
+    Manage $PROJECT_NAME container
+
+SubCommands:
+    start    Start $PROJECT_NAME container
+               (for more details, run '$SCRIPT_NAME start -h')
+    stop     Stop $PROJECT_NAME container
+    status   Show status of $PROJECT_NAME container
+    restart  Restart $PROJECT_NAME container
+    help     Show this usage
+_EOT_
+}
+
+function print_start_usage(){
+    cat <<_EOT_
+Usage:
+    $SCRIPT_NAME start [OPTION] [COMMAND]
+
+Description:
+    run $PROJECT_NAME container
+    if COMMAND is specified, run COMMAND instead of dafault entrypoint
+
+Options:
+    -a         Connect tty to container (default)
+    -d         Input and output is discarded
+                 (This option overrides -a option)
+    -p number  Bind 'number' port (default: $PORT)
+    -t TAG     Use 'tag' for container image (default: $DEFAULT_IMAGE_TAG)
+    -h         Show this usage
+_EOT_
+}
+
+function main(){
+    cd "$(dirname "$0")" || exit 1
+    cd ..
+
+    subcommand=$1
+    shift
+
+    case $subcommand in
+        start)
+            start "$@"
+            ;;
+        stop)
+            stop "$@"
+            ;;
+        status)
+            status
+            ;;
+        restart)
+            restart "$@"
+            ;;
+        help)
+            print_usage
+            ;;
+        "")
+            print_usage
+            ;;
+        *)
+            echo "Invalid option: '$1'"
+            exit 1
+            ;;
+    esac
+    return 0
+}
+
+function start(){
+    set_start_options_from_args "$@"
+
+    $DOCKER_COMPOSE down
+    image_tag=$IMAGE_TAG port=$PORT \
+        $DOCKER_COMPOSE up $ATTACH_OPTION
+}
+
+function set_start_options_from_args(){
+    ATTACH_OPTION=$DEFAULT_ATTACH_OPTION
+    PORT=$DEFAULT_PORT
+    IMAGE_TAG=$DEFAULT_IMAGE_TAG
+
+    while getopts hadp:i:e: OPT; do
+        case $OPT in
+            a)
+                ATTACH_OPTION=""
+                ;;
+            d)
+                ATTACH_OPTION="-d"
+                ;;
+            p)
+                PORT=$OPTARG
+                ;;
+            t)
+                IMAGE_NAME=$OPTARG
+                ;;
+            h)
+                print_start_usage
+                exit 0
+                ;;
+            *)
+                echo "Invalid option: $OPT"
+                print_start_usage
+                exit 1
+                ;;
+        esac
+    done
+}
+
+function stop(){
+    $DOCKER_COMPOSE down
+}
+
+function status(){
+    $DOCKER_COMPOSE ls
+}
+
+function restart(){
+    $DOCKER_COMPOSE restart
+}
+
+function image_exists(){
+    if [ $(docker images $IMAGE_NAME | wc -l) = 1 ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+main "$@"

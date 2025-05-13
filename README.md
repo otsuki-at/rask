@@ -52,110 +52,111 @@ $ cd rask
 rask の開発には docker-compose を使用する．
 このため，docker-compose をインストールし，以下のコマンドを用いて開発を行うとよい．
 
-- コンテナの起動
+- サーバ起動
   ```
   $ make up
   ```
-- 依存関係のインストール，データベースのマイグレーション
+- Gemfile の更新などによる依存関係の再インストール (Bundle install)
   ```
   $ make setup
   ```
-
-- サーバ起動
-  ```
-  $ make start
-  ```
-
 - テスト実行
   ```
   $ make rails-test
   ```
-### Production
+- サーバ停止
+  ```
+  $ make down
+  ```
+## Production
+### スクリプトを用いた管理
 - コンテナイメージの作成
   ```
-  $ scripts/setup-docker.sh <UserName>
+  $ scripts/setup-production-container.sh <UserName>
   ```
   上記のコマンドのうち，\<UserName> は rask のコンテナを起動するユーザである．
-​
+
   - Why does \<UserName> need?
 
     Dockerを用いてファイルを作成したとき，既定だと所有者がrootユーザで作成される．
     このため，データベースを保存するファイルがrootユーザで作成されてしまい，他のユーザがデータベースを使用できない．
     そこで，```scripts/setup-docker.sh``` と ```scripts/rask-docker.sh``` を用いることで，所有者を指定してデータベースが作成し，raskを使用できる．
     これにより，root以外のユーザでもデータベースを使用できるようになる．
-​
-- rask の起動
-  ```
-  $ scripts/rask-docker.sh start [-p PORT]
-  ```
-  上記のコマンドのうち，```PORT``` は rask のコンテナをバインドするポート番号である．
-  デフォルトでは 3000 番で起動する．
-  コンテナが起動した場合，コンテナ名は ```rask-<PORT>```(デフォルトは```rask-3000```)となる．
-​
-- rask の停止
-  ```
-  $ scripts/rask-docker.sh stop [ContainerName]
-  ```
-  上記のコマンドのうち，```ContainerName``` は停止させる rask のコンテナ名である．
-  ```ContainerName``` が指定されていない場合，デフォルトでは```rask-3000``` が停止する．
-  ただし，```rask-3000``` 以外のコンテナが起動していた場合は停止しない．
 
-- 起動中の rask のコンテナの確認
+- 起動
   ```
-  $ scripts/rask-docker.sh status
-  Running container(s):
-  rask-3030
-  rask-3000
+  $ bin/launch-production start [-p PORT] [-t TAG] [-a/-d]
+  ```
+  - オプション
+    1. `-p PORT`: rask のコンテナをバインドするポート番号．デフォルトは 3000．
+    2. `-t TAG`: rask イメージのタグ．"-t v1.0.1"と指定されると"rask:v1.0.1"のイメージを使用する．デフォルトは "latest"
+    3. `-a/-d`: コンテナにアタッチ(-a)するかデタッチ(-d)するか．デフォルトは -a．
+
+- 停止
+  ```
+  $ bin/launch-production stop
+  ```
+  Raskコンテナを停止する．
+
+- 状態確認
+  ```
+  $ bin/launch-production status
   ```
 
-- コンテナの再起動
+- 再起動
   ```
-  $ scripts/rask-docker.sh restart [ContainerName]
+  $ bin/launch-production restart
   ```
-  上記のコマンドのうち，```ContainerName``` は再起動させる rask のコンテナ名である．
-  ```ContainerName``` が指定されていない場合，デフォルトでは```rask-3000``` が再起動する．
-  ただし，```rask-3000``` 以外のコンテナが起動していた場合は再起動しない．
 
-### systemd
+### systemd を用いた管理
 
 `systemd` を用いて rask を起動したい場合は以下の手順を行う．
 
-- `scripts/systemd_conf/rask.service` の書き換え
-  ```
-  6	[Service]
-  7	# Change path to suit your environment
-  8	WorkingDirectory=<Path to rask repository>
-  9	ExecStart=<Path to rask repository>/scripts/rask-docker.sh start -p 3000
-  10	ExecStop=<Path to rask repository>/scripts/rask-docker.sh stop
-  ```
-  上記のうち，`<Path to rask repository>` をraskが保存されているフォルダのパスに変更する．
+1. サービスファイルを配置
+    ```
+    $ cp scripts/systemd_conf/rask.service /etc/systemd/system/
+    ```
 
-- サービスファイルを配置
-  ```
-  $ cp scripts/systemd_conf/rask.service /etc/systemd/system/
-  ```
+2. `/etc/systemd/system/rask.service` の書き換え
+    ```
+    6	[Service]
+    7	# Change path to suit your environment
+    8	WorkingDirectory=<Path to rask repository>
+    9	ExecStart=<Path to rask repository>/bin/launch-production start -p 3000
+    10	ExecStop=<Path to rask repository>/bin/launch-production stop
+    11
+    12	# Change user who owns this repository
+    13	User=rask
+    ```
+    - `<Path to rask repository>` を Rask が保存されているフォルダのパスに変更する．
+    - `User=rask` を Rask を使用するユーザに変更する．基本的には Rask ディレクトリのオーナーを指定することを推奨．
 
-- rask のサービスファイルを `systemd` に反映
-  ```
-  $ systemctl daemon-reload
-  $ systemctl status rask.service
-  ● rask.service - Rask: Task Management System
-     Loaded: loaded (/etc/systemd/system/rask.service; enabled; vendor preset: enabled)
-     Active: active (running) since Tue YYYY-MM-DD hh:mm:ss JST;
-   Main PID: XXXX (rask-docker.sh)
-      Tasks: XX (limit: XXXXX)
-     Memory: XX.XM
-     CGroup: /system.slice/rask.service
-  ```
+3. Rask のサービスファイルを `systemd` に反映
+    ```
+    $ systemctl daemon-reload
+    ```
 
-- `systemd` を用いて rask を起動
-  ```
-  $ systemctl start rask.service
-  ```
+4. `systemd` を用いて rask を起動
+    ```
+    $ systemctl start rask.service
+    $ systemctl status rask.service
+    ● rask.service - Rask: Task Management System
+       Loaded: loaded (/etc/systemd/system/rask.service; enabled; vendor preset: enabled)
+       Active: active (running) since Tue YYYY-MM-DD hh:mm:ss JST;
+     Main PID: XXXX (rask-docker.sh)
+       Tasks: XX (limit: XXXXX)
+       Memory: XX.XM
+       CGroup: /system.slice/rask.service
+    ```
 
-## 自動更新
-#### 概要
+5. 計算機起動時に自動起動する
+    ```
+    $ systemctl enable rask.service
+    ```
+
+### 自動更新
 * Rask に新たな Release が作成された際に自動更新できる．
+* 本スクリプトは Rask が systemd で管理されている状態でのみ機能する．
 #### 手順
 1. `scripts/systemd_conf/rask-autoupdate.service` および `scripts/systemd_conf/rask-autoupdate.timer` を `/etc/systemd/system/` 以下にコピーする
     ```bash
@@ -166,7 +167,7 @@ rask の開発には docker-compose を使用する．
     # /etc/systemd/system/rask-autoupdate.service
     - User=rask-user
     + User=nomlab
-  
+
     - ExecStart=/path/to/rask/script/update_rask.sh
     + ExecStart=/home/nomlab/rask/scripts/update_rask.sh
     ```
