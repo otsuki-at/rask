@@ -7,6 +7,7 @@ REMOTE_NAME="origin"
 
 function main(){
     cd "$(dirname "$0")" || exit 1
+    cd ../
 
     # Get current tag of this repository
     local_tag=$(git describe --tags --abbrev=0 2> /dev/null || echo v0.0.0)
@@ -28,7 +29,7 @@ function main(){
         ./scripts/setup-production-container.sh "$USER"
 
         # Stop Rask container and then Rask is restarted by systemd
-        ./bin/launch-production stop
+        ./bin/launch-production restart
 
         echo "Rask has been updated to $remote_tag"
     else
