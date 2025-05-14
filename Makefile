@@ -1,19 +1,19 @@
+PROJECT_NAME=rask
+
+UID=$(shell id -u)
+GID=$(shell id -g)
+
 up:
-	docker compose up -d
+	UID=${UID} GID=${GID} docker compose up -d
 
 setup:
-	docker compose exec myapp bash -c 'bundle install'
-	docker compose exec myapp bash -c 'bundle exec rails db:migrate'
-	docker compose exec myapp bash -c 'bundle exec rails assets:precompile'
+	UID=${UID} GID=${GID} docker compose exec ${PROJECT_NAME} bash -c 'bundle install'
 
-start:
-	docker compose exec myapp bash -c 'bundle exec rails server -b 0.0.0.0'
-
-myapp:
-	docker compose exec myapp bash
+shell:
+	UID=${UID} GID=${GID} docker compose exec ${PROJECT_NAME} bash
 
 down:
-	docker compose down --rmi all --volumes
+	UID=${UID} GID=${GID} docker compose down
 
-rails-test:
-	docker compose exec myapp bundle exec rails test
+test:
+	UID=${UID} GID=${GID} docker compose exec ${PROJECT_NAME} bundle exec rails test

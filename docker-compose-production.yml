@@ -1,0 +1,17 @@
+name: rask
+
+services:
+  rask:
+    image: rask:${image_tag:-latest}
+    container_name: rask-${port:-3000}
+    ports:
+      - ${port:-3000}:3000
+    volumes:
+      - ./log:/rails/log
+      - ./storage:/rails/storage
+      - ./.env:/rails/.env
+      - ./config/master.key:/rails/config/master.key
+    restart: no
+    environment:
+      RAILS_ENV: production
+    tty: true

@@ -8,7 +8,7 @@ Type=oneshot
 User=rask-user
 
 # Change this to the path to the Rask repository
-ExecStart=/path/to/rask/script/update_rask.sh
+ExecStart=/path/to/rask/scripts/autoupdate.sh
 
 [Install]
 WantedBy=multi-user.target
