@@ -1,0 +1,25 @@
+name: Build Docker Image
+run-name: ${{ github.actor }} is building Docker image
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          file: Dockerfile_production
+          build-args: |
+            UID=1000
+            GID=1000
