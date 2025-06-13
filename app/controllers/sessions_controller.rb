@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
 
     user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
     log_in user
-    redirect_to root_path
+    redirect_to(session[:return_to] || root_path)
   end
 
   def login_with_passwd_auth

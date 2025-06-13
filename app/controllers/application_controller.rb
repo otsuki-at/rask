@@ -17,6 +17,8 @@ class ApplicationController < ActionController::Base
   # ユーザーのログインを確認する
   def logged_in_user
     unless logged_in?
+      session[:return_to] = request.fullpath if request.get? && !request.xhr?
+
       respond_to do |format|
         format.html {
           flash[:danger] = "この操作にはログインが必要です"
