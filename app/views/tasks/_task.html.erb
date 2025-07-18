@@ -1,13 +1,21 @@
 <div class="p-3 my-3 border rounded d-flex justify-content-between align-items-center">
   <div class="flex-grow-1">
-    <p class="h5 mb-2">
-      <% if task.completed? %>
-        <i class="far fa-check-circle" style="color: <%= task.state.color %>;"></i>
-      <% else %>
-        <i class="far fa-dot-circle" style="color: <%= task.state.color %>;"></i>
+    <div class="h5 mb-2">
+      <%= turbo_frame_tag "task_#{task.id}" do %>
+        <span style="display: inline-block;">
+          <% if task.completed? %>
+            <%= button_to task, method: :patch, params: { task: { task_state_id: TaskState.find_by(name: 'todo').id } }, class: "btn btn-link p-0 border-0", style: "background: none;" do %>
+              <i class="far fa-check-circle" style="color: <%= task.state.color %>; cursor: pointer;"></i>
+            <% end %>
+          <% else %>
+            <%= button_to task, method: :patch, params: { task: { task_state_id: TaskState.find_by(name: 'done').id } }, class: "btn btn-link p-0 border-0", style: "background: none;" do %>
+              <i class="far fa-dot-circle" style="color: <%= task.state.color %>; cursor: pointer;"></i>
+            <% end %>
+          <% end %>
+        </span>
       <% end %>
       <%= link_to task.content, task, class: "text-black" %>
-    </p>
+    </div>
     <p class="mb-1">
       <% if task.project %>
         <%= link_to task.project.name, task.project, class: "text-black" %>
