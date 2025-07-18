@@ -10,3 +10,4 @@ pin "eventemitter3" # @2.0.3
 pin "textarea-caret" # @3.1.0
 pin "undate/lib/update", to: "undate--lib--update.js" # @0.2.4
 pin "tag_completion"
+pin "documents", to: "documents.js"
