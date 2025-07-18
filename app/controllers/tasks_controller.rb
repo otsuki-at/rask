@@ -15,19 +15,19 @@ class TasksController < ApplicationController
   def sort_check(param)
     if param.present?
       sort_column = []
-      sort_column << "task_state_id ASC" << param
+      sort_column << "state_priority DESC" << param
     else
-      "task_state_id ASC"
+      "state_priority DESC"
     end
   end
 
   # GET /tasks or /tasks.json
   def index
     if params[:q].nil?
-      @q = Task.ransack(params[:q])
-      @q.sorts = "task_state_id ASC"
+      @q = Task.joins(:state).ransack(params[:q])
+      @q.sorts = ["state_priority DESC", "due_at ASC"]
     else
-      @q = Task.ransack({combinator: 'and', groupings: search_check(params[:q][:content_or_assigner_screen_name_or_description_or_project_name_cont])})
+      @q = Task.joins(:state).ransack({combinator: 'and', groupings: search_check(params[:q][:content_or_assigner_screen_name_or_description_or_project_name_cont])})
       @q.sorts = sort_check(params[:q][:s])
     end
     @tasks = @q.result.page(params[:page]).per(50).includes(:user, :state)
