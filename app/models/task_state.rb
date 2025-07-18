@@ -3,4 +3,8 @@ class TaskState < ApplicationRecord
 
   validates :name, presence: true
   validates :priority, presence: true
+
+  def self.ransackable_attributes(auth_object = nil)
+    [ "priority" ]
+  end
 end
