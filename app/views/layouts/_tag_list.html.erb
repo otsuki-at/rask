@@ -2,7 +2,7 @@
   <p class="fw-bold fs-4 mb-3">タグ一覧</p>
   <div class="d-flex flex-wrap gap-1">
     <% Tag.order_by_popularity.each do |tag| %>
-      <%= link_to tag_label(tag), tag, class: "btn btn-primary btn-outline-primary btn-lg" %>
+      <%= link_to tag_label(tag), tag, class: "btn btn-primary btn-outline-primary" %>
     <% end %>
   </div>
 </div>
